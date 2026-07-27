@@ -7,7 +7,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 describe("MessagesClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -19,7 +19,7 @@ describe("MessagesClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -32,7 +32,7 @@ describe("MessagesClient", () => {
 
     test("send (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { agent_id: "agent_id", to_number: "to_number", body: "body" };
         const rawResponseBody = { key: "value" };
 
@@ -55,7 +55,7 @@ describe("MessagesClient", () => {
 
     test("send (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { agent_id: "agent_id", to_number: "to_number", body: "body" };
         const rawResponseBody = {};
 
@@ -79,7 +79,7 @@ describe("MessagesClient", () => {
 
     test("list_conversations (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -97,7 +97,7 @@ describe("MessagesClient", () => {
 
     test("list_conversations (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 

@@ -7,7 +7,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 describe("BillingClient", () => {
     test("get_balance", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -25,7 +25,7 @@ describe("BillingClient", () => {
 
     test("get_expenditure (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -43,7 +43,7 @@ describe("BillingClient", () => {
 
     test("get_expenditure (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -62,7 +62,7 @@ describe("BillingClient", () => {
 
     test("list_call_charges (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -80,7 +80,7 @@ describe("BillingClient", () => {
 
     test("list_call_charges (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -99,7 +99,7 @@ describe("BillingClient", () => {
 
     test("list_number_charges (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -117,7 +117,7 @@ describe("BillingClient", () => {
 
     test("list_number_charges (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -136,7 +136,7 @@ describe("BillingClient", () => {
 
     test("get_summary (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -154,7 +154,7 @@ describe("BillingClient", () => {
 
     test("get_summary (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 

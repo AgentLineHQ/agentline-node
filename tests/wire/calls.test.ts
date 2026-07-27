@@ -7,7 +7,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 describe("CallsClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -19,7 +19,7 @@ describe("CallsClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -32,7 +32,7 @@ describe("CallsClient", () => {
 
     test("create (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { agent_id: "agent_id", to_number: "to_number" };
         const rawResponseBody = { key: "value" };
 
@@ -54,7 +54,7 @@ describe("CallsClient", () => {
 
     test("create (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { agent_id: "agent_id", to_number: "to_number" };
         const rawResponseBody = {};
 
@@ -77,7 +77,7 @@ describe("CallsClient", () => {
 
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -91,7 +91,7 @@ describe("CallsClient", () => {
 
     test("get (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -106,7 +106,7 @@ describe("CallsClient", () => {
 
     test("push_context (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { key: "value" };
         const rawResponseBody = { key: "value" };
 
@@ -130,7 +130,7 @@ describe("CallsClient", () => {
 
     test("push_context (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { string: { key: "value" } };
         const rawResponseBody = {};
 
@@ -157,7 +157,7 @@ describe("CallsClient", () => {
 
     test("hangup (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -177,7 +177,7 @@ describe("CallsClient", () => {
 
     test("hangup (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -198,7 +198,7 @@ describe("CallsClient", () => {
 
     test("get_transcript (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -218,7 +218,7 @@ describe("CallsClient", () => {
 
     test("get_transcript (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 

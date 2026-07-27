@@ -7,7 +7,7 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 describe("WebhooksClient", () => {
     test("list (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -19,7 +19,7 @@ describe("WebhooksClient", () => {
 
     test("list (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -32,7 +32,7 @@ describe("WebhooksClient", () => {
 
     test("set (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { url: "url", agent_id: "agent_id" };
         const rawResponseBody = {
             agent_id: "agent_id",
@@ -60,7 +60,7 @@ describe("WebhooksClient", () => {
 
     test("set (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { url: "x", agent_id: "agent_id" };
         const rawResponseBody = {};
 
@@ -83,7 +83,7 @@ describe("WebhooksClient", () => {
 
     test("delete (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -97,7 +97,7 @@ describe("WebhooksClient", () => {
 
     test("delete (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 
@@ -112,7 +112,7 @@ describe("WebhooksClient", () => {
 
     test("test (1)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = { key: "value" };
 
@@ -126,7 +126,7 @@ describe("WebhooksClient", () => {
 
     test("test (2)", async () => {
         const server = mockServerPool.createServer();
-        const client = new AgentLineClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
         const rawResponseBody = {};
 

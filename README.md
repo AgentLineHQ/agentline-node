@@ -43,7 +43,7 @@ Instantiate and use the client with the following:
 ```typescript
 import { AgentLineClient } from "agentline";
 
-const client = new AgentLineClient({ token: "YOUR_TOKEN" });
+const client = new AgentLineClient({ apiKey: "YOUR_API_KEY" });
 await client.agents.create({
     name: "name"
 });

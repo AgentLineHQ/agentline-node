@@ -29,7 +29,7 @@ export class AgentLineClient {
     protected _numbers: NumbersClient | undefined;
     protected _webhooks: WebhooksClient | undefined;
 
-    constructor(options: AgentLineClient.Options) {
+    constructor(options: AgentLineClient.Options = {}) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 

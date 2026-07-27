@@ -19,7 +19,7 @@ export declare namespace VoiceClient {
 export class VoiceClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<VoiceClient.Options>;
 
-    constructor(options: VoiceClient.Options) {
+    constructor(options: VoiceClient.Options = {}) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 

@@ -18,7 +18,7 @@ export declare namespace BillingClient {
 export class BillingClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<BillingClient.Options>;
 
-    constructor(options: BillingClient.Options) {
+    constructor(options: BillingClient.Options = {}) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 

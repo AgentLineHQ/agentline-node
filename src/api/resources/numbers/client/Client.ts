@@ -19,7 +19,7 @@ export declare namespace NumbersClient {
 export class NumbersClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<NumbersClient.Options>;
 
-    constructor(options: NumbersClient.Options) {
+    constructor(options: NumbersClient.Options = {}) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
