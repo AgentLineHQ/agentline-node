@@ -1,0 +1,16 @@
+{
+    "cliVersion": "5.80.4",
+    "generatorName": "fernapi/fern-typescript-sdk",
+    "generatorVersion": "3.83.0",
+    "generatorConfig": {
+        "bundle": false,
+        "naming": {
+            "client": "AgentLineClient"
+        }
+    },
+    "originGitCommit": "26471731b1c64d4b7baf7782b76da34cfc5dfee9",
+    "originGitCommitIsDirty": false,
+    "invokedBy": "ci",
+    "ciProvider": "github",
+    "sdkVersion": "0.0.1"
+}
