@@ -36,7 +36,7 @@ export class BearerAuthProvider implements core.AuthProvider {
 }
 
 export namespace BearerAuthProvider {
-    export const AUTH_SCHEME = "API Key" as const;
+    export const AUTH_SCHEME = "API Key or OAuth" as const;
     export const AUTH_CONFIG_ERROR_MESSAGE: string =
         `Please provide '${TOKEN_PARAM}' when initializing the client, or set the '${ENV_TOKEN}' environment variable` as const;
     export type Options = AuthOptions;
