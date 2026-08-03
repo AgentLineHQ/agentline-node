@@ -12,5 +12,5 @@
     "originGitCommitIsDirty": false,
     "invokedBy": "ci",
     "ciProvider": "github",
-    "sdkVersion": "0.0.9"
+    "sdkVersion": "0.0.10"
 }
