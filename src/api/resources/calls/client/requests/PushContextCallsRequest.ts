@@ -13,6 +13,8 @@ export interface PushContextCallsRequest {
     call_id: string;
     /** Push token (alt to X-Push-Token header / body). */
     token?: string | null;
+    /** Turn ID from call.utterance. */
+    turn_id?: string | null;
     "X-Push-Token"?: string | null;
     body: Record<string, unknown>;
 }
