@@ -478,9 +478,9 @@ await client.agents.get({
 
 Delete an AI voice agent.
 
-Permanently removes the agent and detaches any phone numbers
-assigned to it. Detached numbers remain active on your account
-and can be reassigned to another agent.
+Permanently removes the agent, its calls, messages, and conversations,
+and detaches any phone numbers assigned to it. Detached numbers remain
+active on your account and can be reassigned to another agent.
 </dd>
 </dl>
 </dd>
