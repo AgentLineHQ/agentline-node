@@ -1,3 +1,5 @@
+export * from "./AgentIdPollRequest.js";
+export * from "./AgentIdStartRequest.js";
 export * from "./AgentOut.js";
 export * from "./FeedbackCategory.js";
 export * from "./FeedbackCreate.js";
