@@ -15,10 +15,10 @@ export interface AgentCreate {
     initial_greeting?: string | null;
     /** TTS voice preset name (e.g. 'female-1', 'male-1') or Cartesia voice UUID; defaults to system voice if not set */
     voice_id?: string | null;
-    /** Phone number in E.164 format to transfer calls to (e.g. a human operator fallback) */
+    /** Ignored unless it is the owner phone. Live transfers always dial owner_phone; a different number is rejected. */
     transfer_number?: string | null;
     /** Message the AI agent leaves if the call goes to voicemail */
     voicemail_message?: string | null;
-    /** Owner's phone number in E.164 format (e.g. '+12125551234'). Calls from this number enter task mode — the agent treats speech as executable instructions. */
+    /** Owner's phone number in E.164 format (e.g. '+12125551234'). Calls from this number enter task mode. This is also the only number a live call can be transferred to. */
     owner_phone?: string | null;
 }

@@ -13,11 +13,11 @@ export interface AgentOut {
     initial_greeting?: (string | null) | undefined;
     /** TTS voice preset or Cartesia UUID */
     voice_id?: (string | null) | undefined;
-    /** Phone number for call transfers */
+    /** Always the owner phone. Live calls transfer only here. */
     transfer_number?: (string | null) | undefined;
     /** Message left on voicemail */
     voicemail_message?: (string | null) | undefined;
-    /** Owner's phone number for task mode */
+    /** Owner's phone number for task mode and the only live-call transfer destination */
     owner_phone?: (string | null) | undefined;
     /** When the agent was created */
     created_at: string;

@@ -9,11 +9,11 @@ export interface KeylessBuyBody {
     initial_greeting?: (string | null) | undefined;
     /** TTS voice preset (e.g. 'female-1') or Cartesia UUID */
     voice_id?: (string | null) | undefined;
-    /** E.164 fallback number for call transfers */
+    /** Must be the owner phone. Live transfers dial only owner_phone. */
     transfer_number?: (string | null) | undefined;
     /** Message left if the call goes to voicemail */
     voicemail_message?: (string | null) | undefined;
-    /** Owner's E.164 phone — calls from it enter task mode */
+    /** Owner's E.164 phone. Calls from it enter task mode, and it is the only live-call transfer destination. */
     owner_phone?: (string | null) | undefined;
     /** Country code (only 'US' supported) */
     country?: string | undefined;

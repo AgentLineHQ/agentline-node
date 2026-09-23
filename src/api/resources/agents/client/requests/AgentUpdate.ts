@@ -16,10 +16,10 @@ export interface AgentUpdate {
     initial_greeting?: string | null;
     /** New TTS voice preset name or Cartesia voice UUID */
     voice_id?: string | null;
-    /** Updated transfer phone number in E.164 format */
+    /** Must match owner_phone. A different number is rejected; setting owner_phone updates this to the same number. */
     transfer_number?: string | null;
     /** Updated voicemail message */
     voicemail_message?: string | null;
-    /** Updated owner phone number in E.164 format for task mode */
+    /** Updated owner phone in E.164. Also becomes the only live-call transfer destination. */
     owner_phone?: string | null;
 }
