@@ -167,6 +167,92 @@ export class NumbersClient {
     }
 
     /**
+     * Manually attach a number that was bought directly from SignalWire dashboard.
+     * Each agent can only have ONE active number.
+     *
+     * Query params:
+     *   - phone_number: E.164 format (e.g. "+12125551234")
+     *   - agent_id: agent to attach to
+     *
+     * @param {AgentlineApi.AttachNumbersRequest} request
+     * @param {NumbersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link AgentlineApi.UnprocessableEntityError}
+     * @throws {@link errors.AgentlineApiError}
+     * @throws {@link errors.AgentlineApiTimeoutError}
+     *
+     * @example
+     *     await client.numbers.attach({
+     *         phone_number: "phone_number",
+     *         agent_id: "agent_id"
+     *     })
+     */
+    public attach(
+        request: AgentlineApi.AttachNumbersRequest,
+        requestOptions?: NumbersClient.RequestOptions,
+    ): core.HttpResponsePromise<unknown> {
+        return core.HttpResponsePromise.fromPromise(this.__attach(request, requestOptions));
+    }
+
+    private async __attach(
+        request: AgentlineApi.AttachNumbersRequest,
+        requestOptions?: NumbersClient.RequestOptions,
+    ): Promise<core.WithRawResponse<unknown>> {
+        const { phone_number: phoneNumber, agent_id: agentId } = request;
+        const _queryParams: Record<string, unknown> = {
+            phone_number: phoneNumber,
+            agent_id: agentId,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.AgentlineApiEnvironment.Production,
+                "v1/numbers/attach",
+            ),
+            method: "POST",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new AgentlineApi.UnprocessableEntityError(
+                        _response.error.body as AgentlineApi.HttpValidationError,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.AgentlineApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/numbers/attach");
+    }
+
+    /**
      * Get details of a specific phone number.
      *
      * Returns the phone number, its assigned AI agent, provider ID,

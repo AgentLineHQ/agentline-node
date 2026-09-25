@@ -60,6 +60,49 @@ describe("NumbersClient", () => {
         }).rejects.toThrow(AgentlineApi.UnprocessableEntityError);
     });
 
+    test("attach (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/numbers/attach")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.numbers.attach({
+            phone_number: "phone_number",
+            agent_id: "agent_id",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("attach (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/v1/numbers/attach")
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.numbers.attach({
+                phone_number: "phone_number",
+                agent_id: "agent_id",
+            });
+        }).rejects.toThrow(AgentlineApi.UnprocessableEntityError);
+    });
+
     test("get (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
