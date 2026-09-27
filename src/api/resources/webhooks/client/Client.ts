@@ -113,6 +113,15 @@ export class WebhooksClient {
      *
      * - `agent_id`: the agent whose events this webhook receives (required).
      * - `secret`:   HMAC signing secret. Omit to auto-generate.
+     * - `protocol`: live relay protocol. `agentline-relay/2` sends typed POSTs
+     *   (`call.session.start`, `call.task.open`, `call.task.amend`,
+     *   `call.task.cancel`, `call.session.end`); answer via
+     *   `POST /v1/calls/{call_id}/context` and return 202 fast. Hosted bots such
+     *   as grokbot use this.
+     * - `capabilities`: what the runtime supports (`supports_amend`,
+     *   `supports_cancel`, `briefing`, `streams_progress`). Without
+     *   `supports_amend`, follow-ups are merged into one task after the current
+     *   one settles.
      *
      * The response returns the full `secret` **once** — store it to verify the
      * signature header on deliveries.

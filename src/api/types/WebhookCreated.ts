@@ -12,6 +12,10 @@ export interface WebhookCreated {
     secret: string;
     /** Header name used for HMAC-SHA256 signature delivery. */
     signature_header: string;
+    /** Live relay protocol. */
+    protocol?: string | undefined;
+    /** Declared relay v2 capabilities. */
+    capabilities?: Record<string, unknown> | undefined;
     /** When the webhook was last (re)configured */
     created_at?: (string | null) | undefined;
 }

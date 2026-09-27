@@ -1168,12 +1168,20 @@ await client.calls.get({
 Push context into a LIVE relay-mode call (mid-call context injection).
 
 This is the required way for backend agents (Hermes, OpenClaw, etc.) to
-answer a live caller after a ``call.utterance`` event. Do your work, then
-POST facts for the hosted voice to phrase in its own words. Send ``disposition: progress``
-as the work advances; the turn stays open. ``done``, ``failed``, or
-``facts`` settles it. The hosted voice keeps the facts for the rest of the call.
-It does not read your text aloud. You receive this request only for something
-the hosted voice does not know. Poll ``GET /v1/calls/{call_id}`` for updates.
+answer a live caller after a ``call.utterance`` / ``task.open``. Do your work,
+then POST facts for the hosted voice to phrase in its own words. The update
+reaches the live call immediately (relay bus), with no polling.
+
+Dispositions:
+  - ``partial``: one real fact known so far. Spoken right away; the task stays open.
+  - ``progress``: a note that is not a fact yet. Not spoken; the task stays open.
+  - ``done`` / ``failed`` / ``noop``: settles the task.
+  - ``facts`` without ``turn_id``: call facts pushed any time (call-start
+    briefing, anticipations). The hosted voice answers from them without asking.
+    ``facts`` with an open task's ``turn_id`` settles that task (relay v1).
+
+The hosted voice keeps the facts for the rest of the call. It does not read
+your text aloud. Poll ``GET /v1/calls/{call_id}`` for updates.
 
 AUTHENTICATION (one of):
   1. **Push token** (preferred — no API key): the ``push_token`` from the
@@ -2171,6 +2179,15 @@ webhook; POSTing again replaces it.
 
 - `agent_id`: the agent whose events this webhook receives (required).
 - `secret`:   HMAC signing secret. Omit to auto-generate.
+- `protocol`: live relay protocol. `agentline-relay/2` sends typed POSTs
+  (`call.session.start`, `call.task.open`, `call.task.amend`,
+  `call.task.cancel`, `call.session.end`); answer via
+  `POST /v1/calls/{call_id}/context` and return 202 fast. Hosted bots such
+  as grokbot use this.
+- `capabilities`: what the runtime supports (`supports_amend`,
+  `supports_cancel`, `briefing`, `streams_progress`). Without
+  `supports_amend`, follow-ups are merged into one task after the current
+  one settles.
 
 The response returns the full `secret` **once** — store it to verify the
 signature header on deliveries.

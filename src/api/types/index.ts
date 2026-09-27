@@ -20,4 +20,5 @@ export * from "./PayDiscoveryBody.js";
 export * from "./TopupRequest.js";
 export * from "./ValidationError.js";
 export * from "./VerifyRequest.js";
+export * from "./WebhookCapabilities.js";
 export * from "./WebhookCreated.js";
