@@ -11,7 +11,7 @@ export interface AgentOut {
     system_prompt?: (string | null) | undefined;
     /** Default greeting for all calls (can be overridden per-call) */
     initial_greeting?: (string | null) | undefined;
-    /** TTS voice preset or Cartesia UUID */
+    /** TTS voice preset or voice UUID */
     voice_id?: (string | null) | undefined;
     /** Always the owner phone. Live calls transfer only here. */
     transfer_number?: (string | null) | undefined;

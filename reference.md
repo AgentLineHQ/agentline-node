@@ -144,7 +144,7 @@ Voice resolution priority:
 
 Accepts:
   - A preset name: "female-1", "female-2", "female-3", "male-1", "male-2", "male-3"
-  - A Cartesia voice UUID: "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+  - A voice UUID: "f786b574-daa5-4673-aa0c-cbe3e8534c02"
 </dd>
 </dl>
 </dd>
@@ -215,8 +215,8 @@ Returns named TTS (text-to-speech) voice presets that can be used
 when configuring AI agents or making phone calls. Each voice defines
 how your AI agent sounds on the phone.
 
-You can use a preset name (e.g. "female-1", "male-1") or pass any
-valid Cartesia voice UUID directly as a voice_id.
+You can use a preset name (e.g. "female-1", "male-1") or pass a
+voice UUID directly as a voice_id.
 </dd>
 </dl>
 </dd>
@@ -341,7 +341,7 @@ Fields:
   - name: Display name for the agent
   - system_prompt: Instructions that define the agent's personality and behavior on calls
   - initial_greeting: What the AI agent says when the call connects
-  - voice_id: TTS voice preset (e.g. "female-1") or Cartesia UUID
+  - voice_id: TTS voice preset (e.g. "female-1") or a voice UUID
   - transfer_number: Must be the owner phone. Live calls transfer only to owner_phone.
   - voicemail_message: Message the agent leaves if the call goes to voicemail
   - owner_phone: Owner's E.164 number. Task mode, and the only transfer destination.
@@ -1894,7 +1894,7 @@ await client.numbers.buy({
 <dl>
 <dd>
 
-Manually attach a number that was bought directly from SignalWire dashboard.
+Manually attach a number that was bought outside this account.
 Each agent can only have ONE active number.
 
 Query params:
@@ -1967,8 +1967,7 @@ await client.numbers.attach({
 
 Get details of a specific phone number.
 
-Returns the phone number, its assigned AI agent, provider ID,
-country, and current status.
+Returns the phone number, its assigned AI agent, country, and current status.
 </dd>
 </dl>
 </dd>

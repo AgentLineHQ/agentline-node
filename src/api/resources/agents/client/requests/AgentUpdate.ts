@@ -14,7 +14,7 @@ export interface AgentUpdate {
     system_prompt?: string | null;
     /** Updated default greeting for ALL future calls (inbound and outbound) */
     initial_greeting?: string | null;
-    /** New TTS voice preset name or Cartesia voice UUID */
+    /** New TTS voice preset name or voice UUID */
     voice_id?: string | null;
     /** Must match owner_phone. A different number is rejected; setting owner_phone updates this to the same number. */
     transfer_number?: string | null;

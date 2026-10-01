@@ -167,7 +167,7 @@ export class NumbersClient {
     }
 
     /**
-     * Manually attach a number that was bought directly from SignalWire dashboard.
+     * Manually attach a number that was bought outside this account.
      * Each agent can only have ONE active number.
      *
      * Query params:
@@ -255,8 +255,7 @@ export class NumbersClient {
     /**
      * Get details of a specific phone number.
      *
-     * Returns the phone number, its assigned AI agent, provider ID,
-     * country, and current status.
+     * Returns the phone number, its assigned AI agent, country, and current status.
      *
      * @param {AgentlineApi.GetNumbersRequest} request
      * @param {NumbersClient.RequestOptions} requestOptions - Request-specific configuration.

@@ -152,7 +152,7 @@ export class VoiceClient {
      *
      * Accepts:
      *   - A preset name: "female-1", "female-2", "female-3", "male-1", "male-2", "male-3"
-     *   - A Cartesia voice UUID: "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+     *   - A voice UUID: "f786b574-daa5-4673-aa0c-cbe3e8534c02"
      *
      * @param {AgentlineApi.VoiceSettingUpdate} request
      * @param {VoiceClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -232,8 +232,8 @@ export class VoiceClient {
      * when configuring AI agents or making phone calls. Each voice defines
      * how your AI agent sounds on the phone.
      *
-     * You can use a preset name (e.g. "female-1", "male-1") or pass any
-     * valid Cartesia voice UUID directly as a voice_id.
+     * You can use a preset name (e.g. "female-1", "male-1") or pass a
+     * voice UUID directly as a voice_id.
      *
      * @param {VoiceClient.RequestOptions} requestOptions - Request-specific configuration.
      *

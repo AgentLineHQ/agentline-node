@@ -5,4 +5,6 @@ export interface KeylessCallBody {
     from_number: string;
     /** Destination phone number in E.164 format */
     to_number: string;
+    /** lease_... token from numbers/buy. Calls bill prepaid credit; this endpoint does not take an x402 payment. */
+    lease_token?: (string | null) | undefined;
 }

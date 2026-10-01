@@ -7,6 +7,6 @@
  *     }
  */
 export interface VoiceSettingUpdate {
-    /** TTS voice preset name (e.g. 'female-1', 'male-1') or Cartesia voice UUID */
+    /** TTS voice preset name (e.g. 'female-1', 'male-1') or a voice UUID */
     voice_id: string;
 }

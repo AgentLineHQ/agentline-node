@@ -91,7 +91,7 @@ export class AgentsClient {
      *   - name: Display name for the agent
      *   - system_prompt: Instructions that define the agent's personality and behavior on calls
      *   - initial_greeting: What the AI agent says when the call connects
-     *   - voice_id: TTS voice preset (e.g. "female-1") or Cartesia UUID
+     *   - voice_id: TTS voice preset (e.g. "female-1") or a voice UUID
      *   - transfer_number: Must be the owner phone. Live calls transfer only to owner_phone.
      *   - voicemail_message: Message the agent leaves if the call goes to voicemail
      *   - owner_phone: Owner's E.164 number. Task mode, and the only transfer destination.

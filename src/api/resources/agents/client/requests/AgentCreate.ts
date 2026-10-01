@@ -13,7 +13,7 @@ export interface AgentCreate {
     system_prompt?: string | null;
     /** Default opening line spoken on ALL calls (inbound and outbound), e.g. 'Hello, how can I help you today?'. Can be overridden per-call via POST /v1/calls. */
     initial_greeting?: string | null;
-    /** TTS voice preset name (e.g. 'female-1', 'male-1') or Cartesia voice UUID; defaults to system voice if not set */
+    /** TTS voice preset name (e.g. 'female-1', 'male-1') or a voice UUID; defaults to system voice if not set */
     voice_id?: string | null;
     /** Ignored unless it is the owner phone. Live transfers always dial owner_phone; a different number is rejected. */
     transfer_number?: string | null;

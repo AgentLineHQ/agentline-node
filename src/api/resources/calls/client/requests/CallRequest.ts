@@ -16,7 +16,7 @@ export interface CallRequest {
     system_prompt?: string | null;
     /** Per-call greeting override. Replaces the agent's default greeting for this call ONLY. If omitted, the agent's default initial_greeting is used. */
     initial_greeting?: string | null;
-    /** Override the TTS voice for this call: preset name (e.g. 'female-1') or Cartesia UUID */
+    /** Override the TTS voice for this call: preset name (e.g. 'female-1') or a voice UUID */
     voice_id?: string | null;
     /** Specific phone number ID to call from; defaults to the agent's assigned number */
     from_number_id?: string | null;

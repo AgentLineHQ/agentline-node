@@ -7,7 +7,7 @@ export interface KeylessBuyBody {
     system_prompt?: (string | null) | undefined;
     /** Opening line spoken when a call connects */
     initial_greeting?: (string | null) | undefined;
-    /** TTS voice preset (e.g. 'female-1') or Cartesia UUID */
+    /** TTS voice preset (e.g. 'female-1') or a voice UUID */
     voice_id?: (string | null) | undefined;
     /** Must be the owner phone. Live transfers dial only owner_phone. */
     transfer_number?: (string | null) | undefined;
