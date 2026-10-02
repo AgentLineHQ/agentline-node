@@ -6,6 +6,6 @@
 export interface KeylessListBody {
     /** Filter to one owned number */
     phone_number?: (string | null) | undefined;
-    /** lease_... token (free auth alternative) */
+    /** agent_... or lease_... access token */
     lease_token?: (string | null) | undefined;
 }
