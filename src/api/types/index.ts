@@ -2,6 +2,7 @@ export * from "./AccountWebhookConfig.js";
 export * from "./AgentIdPollRequest.js";
 export * from "./AgentIdStartRequest.js";
 export * from "./AgentOut.js";
+export * from "./ApiKeyWebhookConfig.js";
 export * from "./FeedbackCategory.js";
 export * from "./FeedbackCreate.js";
 export * from "./FeedbackOut.js";
