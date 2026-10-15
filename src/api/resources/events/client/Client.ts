@@ -27,14 +27,12 @@ export class EventsClient {
      *
      * Returns pending events such as call completions, transcripts, and
      * failures. Events are consumed on retrieval (one-time read) — once
-     * polled, they are automatically deleted from the mailbox.
+     * polled, they are automatically deleted from the mailbox, so process or
+     * store them. Use peek_events to look without consuming.
      *
-     * Your AI agent should call this endpoint periodically to receive
-     * notifications about completed calls and their transcripts.
-     *
-     * Filters:
-     *   - agent_id: only events for a specific AI agent
-     *   - event_type: e.g. "call.completed", "call.failed"
+     * Returns {"events": [...], "count"}: each event has event_id, agent_id,
+     * event_type, payload and created_at, oldest first. An empty list means
+     * nothing is pending. Agents with a webhook receive events there instead.
      *
      * @param {AgentlineApi.PollEventsRequest} request
      * @param {EventsClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -118,6 +116,11 @@ export class EventsClient {
      * Returns a preview of queued events (call completions, transcripts)
      * without removing them from the mailbox. Useful for checking if
      * there are events to process before committing to retrieve them.
+     *
+     * Returns {"pending_count", "events"}: pending_count counts every queued
+     * event for the account (or agent_id); events lists event_id, agent_id,
+     * event_type and created_at, without payloads. Call poll_events to get the
+     * payloads.
      *
      * @param {AgentlineApi.PeekEventsRequest} request
      * @param {EventsClient.RequestOptions} requestOptions - Request-specific configuration.

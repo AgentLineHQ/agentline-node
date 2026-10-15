@@ -12,9 +12,9 @@ import type * as AgentlineApi from "../../../../index.js";
 export interface WebhookConfig {
     /** HTTPS URL that will receive this agent's events as signed JSON POSTs. Setting this replaces any existing webhook for the agent. */
     url: string;
-    /** ID of the agent whose events this webhook receives. Each agent may have at most one webhook. */
+    /** ID (agt_...) of the agent whose events this webhook receives, from create_agent or list_agents. Each agent may have at most one webhook. */
     agent_id: string;
-    /** Optional HMAC signing secret. Auto-generated if omitted. Used to verify the signature header on delivered payloads. */
+    /** Optional HMAC signing secret used to verify the signature header on delivered payloads. Omit to keep the current secret, or to auto-generate one for a new webhook. */
     secret?: string | null;
     /** Header name for the HMAC-SHA256 signature of the raw body. Defaults to 'X-Webhook-Signature' (natively verified by Hermes, OpenClaw, and other agent platforms). Set to 'X-Hub-Signature-256' for GitHub-style verification, or any custom header name your platform expects. Omit to keep the existing value when updating. */
     signature_header?: string | null;

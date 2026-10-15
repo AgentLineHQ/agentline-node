@@ -5,12 +5,12 @@
  *     {}
  */
 export interface ListMessagesRequest {
-    /** Filter messages by AI agent ID */
+    /** Only messages for this agent (agt_... from list_agents). Omit for every agent on the account. */
     agent_id?: string | null;
-    /** Filter messages by conversation thread ID */
+    /** Only messages in this thread; take conversation_id from an earlier list_messages result. */
     conversation_id?: string | null;
-    /** Maximum number of messages to return (1-200) */
+    /** Page size: how many messages to return, newest first. */
     limit?: number;
-    /** Number of messages to skip for pagination */
+    /** How many messages to skip, to page past earlier results. */
     offset?: number;
 }

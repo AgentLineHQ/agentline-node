@@ -3,15 +3,15 @@
 import type * as AgentlineApi from "../index.js";
 
 export interface FeedbackCreate {
-    /** Type of feedback: 'bug' (something broken / not working), 'feature_request' (want a new capability), 'difficulty' (hard or confusing to use), or 'feedback' (general comment or praise) */
+    /** Kind of report: bug (something broken), feature_request (a missing capability), difficulty (hard or confusing to use) or feedback (general comment or praise) */
     category: AgentlineApi.FeedbackCategory;
     /** Detailed description of the feedback, issue, or request. For bugs, include what you expected vs. what actually happened. */
     message: string;
-    /** Short summary title for the feedback (optional) */
+    /** Short summary shown as the title, e.g. 'Outbound call drops after greeting'. When omitted the feedback is saved without a subject. */
     subject?: (string | null) | undefined;
-    /** Impact level, mainly relevant for bugs: 'low', 'normal', 'high', or 'critical' */
+    /** How much the issue affects you; mainly relevant for bugs */
     severity?: AgentlineApi.FeedbackSeverity | undefined;
-    /** ID of the AI agent this feedback relates to, if applicable */
+    /** Agent the feedback is about (agt_... from list_agents), if any. Must be an agent on this account. */
     agent_id?: (string | null) | undefined;
     /** Email address for follow-up about this feedback (optional) */
     contact_email?: (string | null) | undefined;

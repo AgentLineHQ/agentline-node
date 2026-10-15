@@ -27,7 +27,12 @@ export class WebhooksClient {
      * List the account's per-agent webhook configuration(s).
      *
      * Secrets are **masked**. Pass `agent_id` to inspect a single agent's webhook.
-     * The full secret is only ever shown once, on the POST that creates/replaces it.
+     * The full secret is only ever shown once, by set_webhook.
+     *
+     * Returns {"webhooks": [...], "count"}: each has agent_id, url, masked
+     * secret, signature_header, protocol, capabilities and created_at. An empty
+     * list means no webhook is set, so events wait for poll_events. HTTP 404 if
+     * agent_id is not an agent on this account.
      *
      * @param {AgentlineApi.ListWebhooksRequest} request
      * @param {WebhooksClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -109,22 +114,12 @@ export class WebhooksClient {
      * The configured URL receives ALL of that agent's event types — call lifecycle
      * (`call.received`, `call.completed`, `call.failed`), SMS (`sms.received`),
      * and future events — as signed JSON POSTs. Each agent may have at most one
-     * webhook; POSTing again replaces it.
+     * webhook; setting it again replaces the URL. Omitted secret,
+     * signature_header, protocol and capabilities keep their current values.
      *
-     * - `agent_id`: the agent whose events this webhook receives (required).
-     * - `secret`:   HMAC signing secret. Omit to auto-generate.
-     * - `protocol`: live relay protocol. `agentline-relay/2` sends typed POSTs
-     *   (`call.session.start`, `call.task.open`, `call.task.amend`,
-     *   `call.task.cancel`, `call.session.end`); answer via
-     *   `POST /v1/calls/{call_id}/context` and return 202 fast. Hosted bots such
-     *   as grokbot use this.
-     * - `capabilities`: what the runtime supports (`supports_amend`,
-     *   `supports_cancel`, `briefing`, `streams_progress`). Without
-     *   `supports_amend`, follow-ups are merged into one task after the current
-     *   one settles.
-     *
-     * The response returns the full `secret` **once** — store it to verify the
-     * signature header on deliveries.
+     * Returns agent_id, url, the full secret (shown only here; get_webhook
+     * masks it), signature_header, protocol, capabilities and created_at.
+     * Store the secret to verify the signature header on deliveries.
      *
      * @param {AgentlineApi.WebhookConfig} request
      * @param {WebhooksClient.RequestOptions} requestOptions - Request-specific configuration.

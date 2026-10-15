@@ -7,6 +7,7 @@
  *     }
  */
 export interface AgentUpdate {
+    /** Agent ID (agt_...) returned by create_agent or list_agents. */
     agent_id: string;
     /** New display name for the AI voice agent */
     name?: string | null;
@@ -16,7 +17,7 @@ export interface AgentUpdate {
     initial_greeting?: string | null;
     /** New TTS voice preset name or voice UUID */
     voice_id?: string | null;
-    /** Must match owner_phone. A different number is rejected; setting owner_phone updates this to the same number. */
+    /** Number a live call is transferred to. Only the owner phone is allowed, so send the same E.164 number as owner_phone (current or in this request); setting owner_phone updates it automatically. */
     transfer_number?: string | null;
     /** Updated voicemail message */
     voicemail_message?: string | null;

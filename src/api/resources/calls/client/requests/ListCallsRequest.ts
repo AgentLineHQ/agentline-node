@@ -5,12 +5,12 @@
  *     {}
  */
 export interface ListCallsRequest {
-    /** Filter calls by AI agent ID */
+    /** Only calls handled by this agent (agt_... from list_agents). Omit for every agent on the account. */
     agent_id?: string | null;
-    /** Filter by call status: 'initiated', 'in-progress', 'completed', or 'failed' */
+    /** Only calls in this exact status, e.g. 'completed' or 'failed'. Other statuses: 'initiated', 'in-progress', 'busy', 'no-answer', 'canceled'. */
     status?: string | null;
-    /** Maximum number of calls to return (1-200) */
+    /** Page size: how many calls to return, newest first. */
     limit?: number;
-    /** Number of calls to skip for pagination */
+    /** How many calls to skip, to page past earlier results. */
     offset?: number;
 }

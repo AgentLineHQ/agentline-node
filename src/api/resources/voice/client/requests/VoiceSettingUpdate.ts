@@ -7,6 +7,6 @@
  *     }
  */
 export interface VoiceSettingUpdate {
-    /** TTS voice preset name (e.g. 'female-1', 'male-1') or a voice UUID */
+    /** Default voice for the account: a preset_name such as 'female-1' or a voice_id UUID, both listed by list_available_voices. */
     voice_id: string;
 }

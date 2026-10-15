@@ -7,5 +7,6 @@
  *     }
  */
 export interface GetAgentsRequest {
+    /** Agent ID (agt_...) returned by create_agent or list_agents. */
     agent_id: string;
 }

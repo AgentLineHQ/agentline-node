@@ -7,5 +7,6 @@
  *     }
  */
 export interface GetTranscriptCallsRequest {
+    /** Call ID (call_...) from make_outbound_call, list_calls or a call event. */
     call_id: string;
 }

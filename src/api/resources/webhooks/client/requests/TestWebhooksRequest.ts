@@ -7,6 +7,6 @@
  *     }
  */
 export interface TestWebhooksRequest {
-    /** Agent whose webhook to test */
+    /** Agent (agt_... from list_agents) whose configured webhook should receive the test event. */
     agent_id: string;
 }

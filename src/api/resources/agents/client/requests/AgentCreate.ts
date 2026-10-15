@@ -15,7 +15,7 @@ export interface AgentCreate {
     initial_greeting?: string | null;
     /** TTS voice preset name (e.g. 'female-1', 'male-1') or a voice UUID; defaults to system voice if not set */
     voice_id?: string | null;
-    /** Ignored unless it is the owner phone. Live transfers always dial owner_phone; a different number is rejected. */
+    /** Number a live call is transferred to. Only the owner phone is allowed, so leave it out or send the same E.164 number as owner_phone; setting owner_phone fills it in. */
     transfer_number?: string | null;
     /** Message the AI agent leaves if the call goes to voicemail */
     voicemail_message?: string | null;

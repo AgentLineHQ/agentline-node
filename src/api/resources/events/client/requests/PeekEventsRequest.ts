@@ -5,8 +5,8 @@
  *     {}
  */
 export interface PeekEventsRequest {
-    /** Filter events by AI agent ID */
+    /** Only events for this agent (agt_... from list_agents). Omit for every agent on the account. */
     agent_id?: string | null;
-    /** Maximum number of events to preview (1-200) */
+    /** Most events to list, oldest first. Does not change pending_count. */
     limit?: number;
 }

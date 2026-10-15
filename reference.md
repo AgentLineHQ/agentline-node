@@ -15,8 +15,11 @@
 Get the current account-level default voice for AI phone agents.
 
 Returns which voice is used for all AI agents under this account
-unless overridden at the agent level or per-call. Controls how
-your AI agents sound during phone conversations.
+unless overridden at the agent level or per-call.
+
+Returns account_id, default_voice_id (the stored preset name or UUID,
+null when none is set) and resolved_voice_id (the voice UUID calls will
+actually use).
 </dd>
 </dl>
 </dd>
@@ -75,7 +78,12 @@ Reset account voice to the system default.
 
 Removes the account-level voice override so all AI agents fall back
 to the system default voice during phone calls (unless they have
-their own voice_id configured).
+their own voice_id configured), starting with their next call. The
+previous value is not kept: read it with get_account_voice first if it
+may be needed again.
+
+Returns account_id, default_voice_id null, resolved_voice_id (the
+system default) and a message.
 </dd>
 </dl>
 </dd>
@@ -137,14 +145,14 @@ controlling how they sound on phone calls. Individual agents or
 specific calls can still override this setting.
 
 Voice resolution priority:
-  1. Per-call voice_id (POST /v1/calls)
-  2. Agent voice_id (PATCH /v1/agents/{id})
-  3. Account default (this endpoint)  ← you are here
+  1. Per-call voice_id (make_outbound_call)
+  2. Agent voice_id (update_agent)
+  3. Account default (this tool)
   4. System default (Supportive Male)
 
-Accepts:
-  - A preset name: "female-1", "female-2", "female-3", "male-1", "male-2", "male-3"
-  - A voice UUID: "f786b574-daa5-4673-aa0c-cbe3e8534c02"
+Returns account_id, default_voice_id (as sent) and resolved_voice_id
+(the UUID it resolves to). An unknown preset or malformed UUID returns
+HTTP 400.
 </dd>
 </dl>
 </dd>
@@ -215,8 +223,10 @@ Returns named TTS (text-to-speech) voice presets that can be used
 when configuring AI agents or making phone calls. Each voice defines
 how your AI agent sounds on the phone.
 
-You can use a preset name (e.g. "female-1", "male-1") or pass a
-voice UUID directly as a voice_id.
+Returns {"voices": [...], "default_voice_id", "usage_hint"}: each voice
+has preset_name (e.g. "female-1"), voice_id (UUID), name and description.
+Pass either preset_name or voice_id as voice_id to create_agent,
+update_agent, make_outbound_call or set_account_voice.
 </dd>
 </dl>
 </dd>
@@ -333,18 +343,13 @@ await client.agents.list();
 
 Create a new AI voice agent for telephony.
 
-Sets up a new AI phone agent with a custom system prompt, voice,
-and greeting. Once created, buy a phone number and attach it to
-this agent so it can make and receive calls autonomously.
+Adds an agent to the account with its own system prompt, voice and
+greeting. Creating an agent is free; it cannot call until it has a
+number, so call buy_phone_number next with the returned id as agent_id.
 
-Fields:
-  - name: Display name for the agent
-  - system_prompt: Instructions that define the agent's personality and behavior on calls
-  - initial_greeting: What the AI agent says when the call connects
-  - voice_id: TTS voice preset (e.g. "female-1") or a voice UUID
-  - transfer_number: Must be the owner phone. Live calls transfer only to owner_phone.
-  - voicemail_message: Message the agent leaves if the call goes to voicemail
-  - owner_phone: Owner's E.164 number. Task mode, and the only transfer destination.
+Returns the new agent, including its id (agt_...). A voice_id that is
+not a preset from list_available_voices or a voice UUID is rejected, as
+is a transfer_number that differs from owner_phone (HTTP 400).
 </dd>
 </dl>
 </dd>
@@ -479,9 +484,12 @@ await client.agents.get({
 
 Delete an AI voice agent.
 
-Permanently removes the agent, its calls, messages, and conversations,
-and detaches any phone numbers assigned to it. Detached numbers remain
-active on your account and can be reassigned to another agent.
+Permanently removes the agent with its calls and transcripts, messages,
+conversations, contacts and webhook. Cannot be undone. Phone numbers
+assigned to it are detached, not released: they stay active
+on your account and can be reassigned to another agent.
+
+Returns {"deleted": true, "agent_id": ...}.
 </dd>
 </dl>
 </dd>
@@ -548,10 +556,12 @@ await client.agents.delete({
 
 Update an AI voice agent's configuration.
 
-Modify any combination of the agent's settings: system prompt,
-voice, greeting, transfer number, or voicemail message.
-Changes take effect on the next call the agent handles.
-Only include the fields you want to change — unset fields are preserved.
+Overwrites the fields you send; omitted fields keep their values and the
+old values are not kept. Changes apply to the next inbound or outbound
+call the agent handles; calls already in progress are unaffected.
+
+Returns the full updated agent. Sending no fields, an unknown voice_id or
+a transfer_number other than owner_phone returns HTTP 400.
 </dd>
 </dl>
 </dd>
@@ -1016,21 +1026,20 @@ await client.calls.list();
 
 Make an outbound phone call from your AI agent.
 
-Initiates a real phone call from the AI agent's phone number to the
-specified destination. The agent uses its configured system prompt,
-voice, and greeting to conduct the conversation autonomously.
+Dials a real person or business from the agent's number. The agent holds
+the whole conversation on its own with its system prompt, voice and
+greeting (or this call's overrides). The call reaches a third party and
+is billed to the account at $0.10 per minute, first minute charged in
+full, so confirm with the user first. Not idempotent: every successful
+call dials again.
 
-The AI agent handles the entire call — speech-to-text, LLM reasoning,
-and text-to-speech — in real time. The call transcript is saved
-automatically and can be retrieved via GET /v1/calls/{call_id}/transcript.
+Prerequisites: an agent with an active number from buy_phone_number
+(HTTP 400 otherwise) and at least $0.50 of balance (HTTP 402 otherwise).
 
-Request body:
-  - agent_id: the AI agent making the call
-  - to_number: destination phone number in E.164 format (e.g. "+12125551234")
-  - from_number_id: (optional) specific number to call from
-  - system_prompt: (optional) override the agent's default prompt for this call
-  - initial_greeting: (optional) override the agent's greeting for this call
-  - voice_id: (optional) override the voice for this call
+Returns right after dialing with the call id (call_...), agent_id,
+from_number, to_number, direction, status and started_at; the call runs
+on its own. Check get_call_details for progress and call
+get_call_transcript once status is completed.
 </dd>
 </dl>
 </dd>
@@ -1167,45 +1176,27 @@ await client.calls.get({
 
 Push context into a LIVE relay-mode call (mid-call context injection).
 
-This is the required way for backend agents (Hermes, OpenClaw, etc.) to
-answer a live caller after a ``call.utterance`` / ``task.open``. Do your work,
-then POST facts for the hosted voice to phrase in its own words. The update
-reaches the live call immediately (relay bus), with no polling.
+A call.utterance or call.task.open event means a live caller is waiting.
+Do the work, then push the facts; they reach the call immediately. The
+hosted voice phrases them in its own words (it never reads your text
+aloud) and keeps them for the rest of the call.
 
-Dispositions:
-  - ``partial``: one real fact known so far. Spoken right away; the task stays open.
-  - ``progress``: a note that is not a fact yet. Not spoken; the task stays open.
-  - ``done`` / ``failed`` / ``noop``: settles the task.
-  - ``facts`` without ``turn_id``: call facts pushed any time (call-start
-    briefing, anticipations). The hosted voice answers from them without asking.
-    ``facts`` with an open task's ``turn_id`` settles that task (relay v1).
+Body fields (send as arguments next to call_id):
+  - context: the facts, e.g. "John emailed yesterday about an invoice."
+    Aliases: summary, answer, response, reply, text, result, message.
+  - disposition: partial (one real fact so far; spoken now, task stays
+    open), progress (a note, not spoken, task stays open), done (default),
+    failed or noop (settle the task; noop needs no context), or facts
+    (call facts at any time without turn_id, e.g. a call-start briefing).
+  - turn_id, push_token: as the parameters below.
 
-The hosted voice keeps the facts for the rest of the call. It does not read
-your text aloud. Poll ``GET /v1/calls/{call_id}`` for updates.
+Auth: pass the event's push_token as token. An AgentLine API key as
+Authorization: Bearer also works; OAuth tokens do not.
 
-AUTHENTICATION (one of):
-  1. **Push token** (preferred — no API key): the ``push_token`` from the
-     ``call.utterance`` payload, via ``X-Push-Token`` header, ``?token=``
-     query param, or ``push_token`` body field.
-  2. **Bearer API key**: ``Authorization: Bearer al_live_...`` for the
-     account that owns the call.
-
-Body — any of these keys works (``context`` is canonical):
-    {"context": "John emailed yesterday about an invoice."}
-
-Other accepted keys: ``summary``, ``answer``, ``response``, ``reply``,
-``text``, ``result``.
-
-Every response must include the exact ``turn_id`` from ``call.utterance``.
-Late context is rejected instead of being applied to another question.
-
-Returns:
-    delivered=true, status="live"      — voice agent will speak it now
-    delivered=true, status="duplicate" — identical retry already accepted
-    HTTP 409                            — turn is stale/cancelled
-    HTTP 410                            — **call has ended.** STOP working
-      on this request and abandon any in-flight lookup. No further context
-      will be spoken.
+Returns {"delivered": true, "status", "call_id", "turn_id"}; status
+"duplicate" means an identical retry was already accepted. HTTP 409: the
+turn is stale or cancelled, so do not reuse this context. HTTP 410: the
+call ended; stop working on this request.
 </dd>
 </dl>
 </dd>
@@ -1418,14 +1409,12 @@ Poll for telephony events from your AI agents.
 
 Returns pending events such as call completions, transcripts, and
 failures. Events are consumed on retrieval (one-time read) — once
-polled, they are automatically deleted from the mailbox.
+polled, they are automatically deleted from the mailbox, so process or
+store them. Use peek_events to look without consuming.
 
-Your AI agent should call this endpoint periodically to receive
-notifications about completed calls and their transcripts.
-
-Filters:
-  - agent_id: only events for a specific AI agent
-  - event_type: e.g. "call.completed", "call.failed"
+Returns {"events": [...], "count"}: each event has event_id, agent_id,
+event_type, payload and created_at, oldest first. An empty list means
+nothing is pending. Agents with a webhook receive events there instead.
 </dd>
 </dl>
 </dd>
@@ -1493,6 +1482,11 @@ Peek at pending telephony events without consuming them.
 Returns a preview of queued events (call completions, transcripts)
 without removing them from the mailbox. Useful for checking if
 there are events to process before committing to retrieve them.
+
+Returns {"pending_count", "events"}: pending_count counts every queued
+event for the account (or agent_id); events lists event_id, agent_id,
+event_type and created_at, without payloads. Call poll_events to get the
+payloads.
 </dd>
 </dl>
 </dd>
@@ -1817,19 +1811,22 @@ await client.numbers.list();
 <dl>
 <dd>
 
-Buy a US phone number for your AI agent.
+Buy a US or Canada phone number for your AI agent.
 
-Searches for and purchases a real US phone number from the telephony
-provider, then attaches it to the specified AI agent. Once attached,
-the agent can make outbound calls and receive inbound calls on this number.
+Buys a real +1 number from the carrier, attaches it to the agent and
+charges $2.00 to the account balance. Once attached, the agent can make
+outbound calls and answers inbound calls on this number. Not idempotent:
+every successful call buys and charges for another number.
 
-Each AI agent can only have ONE active phone number. Costs $2.00 per number.
+Prerequisites: an agent from create_agent with no active number (each
+agent has at most one; a second purchase returns HTTP 409) and at least
+$2.00 of balance (HTTP 402 otherwise; see get_account_balance).
 
-Request body:
-  - agent_id: str (required) — the AI agent to assign this number to
-  - country: str (must be "US")
-  - number_type: "local" | "tollfree"
-  - area_code: preferred 3-digit US area code (e.g. "212" for NYC, "415" for SF)
+Returns the number's id (num_..., used by release_phone_number and as
+from_number_id), phone_number, country, number_type, status, cost,
+balance_remaining and a private number card link (card_url,
+card_image_url, card_url_expires_at). If the account has an owner email,
+the card link is also emailed there.
 </dd>
 </dl>
 </dd>
@@ -2106,7 +2103,12 @@ await client.numbers.reassign({
 List the account's per-agent webhook configuration(s).
 
 Secrets are **masked**. Pass `agent_id` to inspect a single agent's webhook.
-The full secret is only ever shown once, on the POST that creates/replaces it.
+The full secret is only ever shown once, by set_webhook.
+
+Returns {"webhooks": [...], "count"}: each has agent_id, url, masked
+secret, signature_header, protocol, capabilities and created_at. An empty
+list means no webhook is set, so events wait for poll_events. HTTP 404 if
+agent_id is not an agent on this account.
 </dd>
 </dl>
 </dd>
@@ -2174,22 +2176,12 @@ Create or replace an agent's webhook.
 The configured URL receives ALL of that agent's event types — call lifecycle
 (`call.received`, `call.completed`, `call.failed`), SMS (`sms.received`),
 and future events — as signed JSON POSTs. Each agent may have at most one
-webhook; POSTing again replaces it.
+webhook; setting it again replaces the URL. Omitted secret,
+signature_header, protocol and capabilities keep their current values.
 
-- `agent_id`: the agent whose events this webhook receives (required).
-- `secret`:   HMAC signing secret. Omit to auto-generate.
-- `protocol`: live relay protocol. `agentline-relay/2` sends typed POSTs
-  (`call.session.start`, `call.task.open`, `call.task.amend`,
-  `call.task.cancel`, `call.session.end`); answer via
-  `POST /v1/calls/{call_id}/context` and return 202 fast. Hosted bots such
-  as grokbot use this.
-- `capabilities`: what the runtime supports (`supports_amend`,
-  `supports_cancel`, `briefing`, `streams_progress`). Without
-  `supports_amend`, follow-ups are merged into one task after the current
-  one settles.
-
-The response returns the full `secret` **once** — store it to verify the
-signature header on deliveries.
+Returns agent_id, url, the full secret (shown only here; get_webhook
+masks it), signature_header, protocol, capabilities and created_at.
+Store the secret to verify the signature header on deliveries.
 </dd>
 </dl>
 </dd>

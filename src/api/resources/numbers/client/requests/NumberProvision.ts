@@ -11,10 +11,10 @@ export interface NumberProvision {
     agent_id: string;
     /** Country code for the phone number (currently only 'US' is supported) */
     country?: string;
-    /** Type of phone number: 'local' or 'tollfree' */
+    /** 'local' for a number in a geographic area code, or 'tollfree' for a toll-free 8xx number */
     number_type?: string;
-    /** Preferred 3-digit US area code (e.g. '212' for NYC, '415' for SF, '310' for LA) */
+    /** For local numbers, the area code the number should be in, written as 3 digits (US e.g. '212' NYC, '415' SF; Canada e.g. '416' Toronto, '604' Vancouver, '514' Montreal); other values make the purchase fail. For tollfree, a prefix such as '800' or '888' narrows the search and other values are ignored. Omit to take any available number. */
     area_code?: string | null;
-    /** Legacy digit pattern match (prefer area_code instead) */
+    /** Legacy search: digits the local number must contain, e.g. '555'. Used only for local numbers when area_code is omitted; prefer area_code. */
     pattern?: string | null;
 }

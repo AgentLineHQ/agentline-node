@@ -5,10 +5,10 @@
  *     {}
  */
 export interface PollEventsRequest {
-    /** Filter events by AI agent ID */
+    /** Only events for this agent (agt_... from list_agents). Omit for every agent on the account. */
     agent_id?: string | null;
-    /** Filter by event type (e.g. 'call.completed', 'call.failed') */
+    /** Only events of this exact type, e.g. 'call.completed', 'call.failed', 'call.received' or 'sms.received'. */
     event_type?: string | null;
-    /** Maximum number of events to return (1-200) */
+    /** Most events to claim in this call, oldest first. Events past the limit stay queued for the next poll. */
     limit?: number;
 }

@@ -5,6 +5,6 @@
  *     {}
  */
 export interface GetExpenditureBillingRequest {
-    /** Time period: 'current_month', 'last_month', 'all_time', or 'YYYY-MM' */
+    /** Which spending to total: 'current_month', 'last_month', 'all_time', or one calendar month as 'YYYY-MM' (e.g. '2026-09'). Unrecognized values fall back to the current month. */
     period?: string;
 }
