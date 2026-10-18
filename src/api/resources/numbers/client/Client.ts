@@ -81,12 +81,12 @@ export class NumbersClient {
     }
 
     /**
-     * Buy a US or Canadian phone number for your AI agent.
+     * Buy a US phone number for your AI agent.
      *
      * Buys a real +1 number from the carrier, attaches it to the agent and
      * uses an included subscription number, or charges $2.00 to the wallet. Once attached, the agent can make
-     * outbound calls and answers inbound calls on this number. Existing numbers retain their carrier.
-     * Each agent can have only one active number.
+     * outbound calls and answers inbound calls on this number. Not idempotent:
+     * every successful call buys and charges for another number.
      *
      * Prerequisites: an agent from create_agent with no active number (each
      * agent has at most one; a second purchase returns HTTP 409), plus a remaining
@@ -177,7 +177,6 @@ export class NumbersClient {
      * Query params:
      *   - phone_number: E.164 format (e.g. "+12125551234")
      *   - agent_id: agent to attach to
-     *   - country: "US" (default) or "CA" — both are +1, so say which
      *
      * @param {AgentlineApi.AttachNumbersRequest} request
      * @param {NumbersClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -203,11 +202,10 @@ export class NumbersClient {
         request: AgentlineApi.AttachNumbersRequest,
         requestOptions?: NumbersClient.RequestOptions,
     ): Promise<core.WithRawResponse<unknown>> {
-        const { phone_number: phoneNumber, agent_id: agentId, country } = request;
+        const { phone_number: phoneNumber, agent_id: agentId } = request;
         const _queryParams: Record<string, unknown> = {
             phone_number: phoneNumber,
             agent_id: agentId,
-            country,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

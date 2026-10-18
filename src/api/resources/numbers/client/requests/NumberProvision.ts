@@ -9,7 +9,7 @@
 export interface NumberProvision {
     /** ID of the AI agent to assign this phone number to (e.g. 'agt_abc123') */
     agent_id: string;
-    /** Country code for the phone number ('US' or 'CA') */
+    /** Country code for the phone number (currently only 'US' is supported) */
     country?: string;
     /** 'local' for a number in a geographic area code, or 'tollfree' for a toll-free 8xx number */
     number_type?: string;
