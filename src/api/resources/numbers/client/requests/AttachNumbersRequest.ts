@@ -10,4 +10,5 @@
 export interface AttachNumbersRequest {
     phone_number: string;
     agent_id: string;
+    country?: string;
 }
