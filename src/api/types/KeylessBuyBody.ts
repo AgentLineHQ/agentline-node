@@ -15,10 +15,10 @@ export interface KeylessBuyBody {
     voicemail_message?: (string | null) | undefined;
     /** Owner's E.164 phone. Calls from it enter task mode, and it is the only live-call transfer destination. */
     owner_phone?: (string | null) | undefined;
-    /** Country code (only 'US' supported) */
+    /** Country code: 'US' or 'CA' */
     country?: string | undefined;
     /** 'local' or 'tollfree' */
     number_type?: string | undefined;
-    /** Preferred 3-digit US area code */
+    /** Preferred 3-digit US or Canada area code */
     area_code?: (string | null) | undefined;
 }

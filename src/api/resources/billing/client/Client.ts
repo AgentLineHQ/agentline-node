@@ -26,7 +26,7 @@ export class BillingClient {
      * Get your AI telephony account balance and rate card.
      *
      * Returns the current balance, currency, billing rates for calls,
-     * phone numbers, and inbound SMS, plus what the balance can cover.
+     * phone numbers, and SMS, plus what the balance can cover.
      * Use this to check affordability before paid telephony operations.
      *
      * @param {BillingClient.RequestOptions} requestOptions - Request-specific configuration.
