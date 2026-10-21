@@ -3,6 +3,6 @@
 export interface VerifyRequest {
     /** Email address the one-time code was sent to */
     email: string;
-    /** One-time code received via email */
+    /** One-time code received via email, exactly as it appears in the message */
     otp: string;
 }

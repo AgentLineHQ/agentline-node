@@ -8,9 +8,9 @@
             "client": "AgentLineClient"
         }
     },
-    "originGitCommit": "d67b26bfa20009a4461c398ceeff956d584a4568",
+    "originGitCommit": "0bf0bf7b3a27d21d43befaa82470ef29493fcb79",
     "originGitCommitIsDirty": false,
     "invokedBy": "ci",
     "ciProvider": "github",
-    "sdkVersion": "0.0.34"
+    "sdkVersion": "0.0.35"
 }
