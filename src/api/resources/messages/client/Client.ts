@@ -110,6 +110,8 @@ export class MessagesClient {
     /**
      * Send an outbound SMS message from an AI agent's phone number.
      *
+     * Each account can send 250 texts per UTC day across all its agents.
+     *
      * @param {AgentlineApi.MessageSend} request
      * @param {MessagesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
