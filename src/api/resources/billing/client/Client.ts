@@ -29,6 +29,11 @@ export class BillingClient {
      * phone numbers, and SMS, plus what the balance can cover.
      * Use this to check affordability before paid telephony operations.
      *
+     * trial is null, or the account's 7-day free trial: status (active,
+     * converted or expired), ends_at, call_seconds_remaining, sms_remaining
+     * and number_id of the free trial number. A top-up or plan converts the
+     * trial and keeps the number; an expired trial's number is detached.
+     *
      * @param {BillingClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link errors.AgentlineApiError}
