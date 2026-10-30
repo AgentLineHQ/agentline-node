@@ -129,14 +129,14 @@ export class MessagesClient {
     public send(
         request: AgentlineApi.MessageSend,
         requestOptions?: MessagesClient.RequestOptions,
-    ): core.HttpResponsePromise<unknown> {
+    ): core.HttpResponsePromise<AgentlineApi.MessageOut> {
         return core.HttpResponsePromise.fromPromise(this.__send(request, requestOptions));
     }
 
     private async __send(
         request: AgentlineApi.MessageSend,
         requestOptions?: MessagesClient.RequestOptions,
-    ): Promise<core.WithRawResponse<unknown>> {
+    ): Promise<core.WithRawResponse<AgentlineApi.MessageOut>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -163,7 +163,7 @@ export class MessagesClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body, rawResponse: _response.rawResponse };
+            return { data: _response.body as AgentlineApi.MessageOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

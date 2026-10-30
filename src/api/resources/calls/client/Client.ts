@@ -287,14 +287,10 @@ export class CallsClient {
      * hosted voice phrases them in its own words (it never reads your text
      * aloud) and keeps them for the rest of the call.
      *
-     * Body fields (send as arguments next to call_id):
-     *   - context: the facts, e.g. "John emailed yesterday about an invoice."
-     *     Aliases: summary, answer, response, reply, text, result, message.
-     *   - disposition: partial (one real fact so far; spoken now, task stays
-     *     open), progress (a note, not spoken, task stays open), done (default),
-     *     failed or noop (settle the task; noop needs no context), or facts
-     *     (call facts at any time without turn_id, e.g. a call-start briefing).
-     *   - turn_id, push_token: as the parameters below.
+     * Arguments: call_id, turn_id and token from the event; context (the
+     * facts) and disposition (partial, progress, done, failed, noop or facts).
+     * context is required unless disposition is noop. turn_id is required
+     * unless disposition is facts.
      *
      * Auth: pass the event's push_token as token. An AgentLine API key as
      * Authorization: Bearer also works; OAuth tokens do not.
@@ -304,7 +300,7 @@ export class CallsClient {
      * turn is stale or cancelled, so do not reuse this context. HTTP 410: the
      * call ended; stop working on this request.
      *
-     * @param {AgentlineApi.PushContextCallsRequest} request
+     * @param {AgentlineApi.CallContextPush} request
      * @param {CallsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link AgentlineApi.UnprocessableEntityError}
@@ -313,24 +309,21 @@ export class CallsClient {
      *
      * @example
      *     await client.calls.pushContext({
-     *         call_id: "call_id",
-     *         body: {
-     *             "key": "value"
-     *         }
+     *         call_id: "call_id"
      *     })
      */
     public pushContext(
-        request: AgentlineApi.PushContextCallsRequest,
+        request: AgentlineApi.CallContextPush,
         requestOptions?: CallsClient.RequestOptions,
     ): core.HttpResponsePromise<unknown> {
         return core.HttpResponsePromise.fromPromise(this.__pushContext(request, requestOptions));
     }
 
     private async __pushContext(
-        request: AgentlineApi.PushContextCallsRequest,
+        request: AgentlineApi.CallContextPush,
         requestOptions?: CallsClient.RequestOptions,
     ): Promise<core.WithRawResponse<unknown>> {
-        const { call_id: callId, token, turn_id: turnId, "X-Push-Token": pushToken, body: _body } = request;
+        const { call_id: callId, token, turn_id: turnId, "X-Push-Token": pushToken, ..._body } = request;
         const _queryParams: Record<string, unknown> = {
             token,
             turn_id: turnId,

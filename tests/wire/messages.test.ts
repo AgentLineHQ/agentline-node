@@ -34,7 +34,17 @@ describe("MessagesClient", () => {
         const server = mockServerPool.createServer();
         const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
         const rawRequestBody = { agent_id: "agent_id", to_number: "to_number", body: "body" };
-        const rawResponseBody = { key: "value" };
+        const rawResponseBody = {
+            id: "id",
+            conversation_id: "conversation_id",
+            agent_id: "agent_id",
+            from_number: "from_number",
+            to_number: "to_number",
+            body: "body",
+            direction: "direction",
+            status: "status",
+            created_at: "2024-01-15T09:30:00Z",
+        };
 
         server
             .mockEndpoint()

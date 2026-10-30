@@ -107,7 +107,7 @@ describe("CallsClient", () => {
     test("push_context (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = {};
         const rawResponseBody = { key: "value" };
 
         server
@@ -121,9 +121,6 @@ describe("CallsClient", () => {
 
         const response = await client.calls.pushContext({
             call_id: "call_id",
-            body: {
-                key: "value",
-            },
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -131,7 +128,7 @@ describe("CallsClient", () => {
     test("push_context (2)", async () => {
         const server = mockServerPool.createServer();
         const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
-        const rawRequestBody = { string: { key: "value" } };
+        const rawRequestBody = {};
         const rawResponseBody = {};
 
         server
@@ -146,11 +143,6 @@ describe("CallsClient", () => {
         await expect(async () => {
             return await client.calls.pushContext({
                 call_id: "call_id",
-                body: {
-                    string: {
-                        key: "value",
-                    },
-                },
             });
         }).rejects.toThrow(AgentlineApi.UnprocessableEntityError);
     });

@@ -1189,14 +1189,10 @@ Do the work, then push the facts; they reach the call immediately. The
 hosted voice phrases them in its own words (it never reads your text
 aloud) and keeps them for the rest of the call.
 
-Body fields (send as arguments next to call_id):
-  - context: the facts, e.g. "John emailed yesterday about an invoice."
-    Aliases: summary, answer, response, reply, text, result, message.
-  - disposition: partial (one real fact so far; spoken now, task stays
-    open), progress (a note, not spoken, task stays open), done (default),
-    failed or noop (settle the task; noop needs no context), or facts
-    (call facts at any time without turn_id, e.g. a call-start briefing).
-  - turn_id, push_token: as the parameters below.
+Arguments: call_id, turn_id and token from the event; context (the
+facts) and disposition (partial, progress, done, failed, noop or facts).
+context is required unless disposition is noop. turn_id is required
+unless disposition is facts.
 
 Auth: pass the event's push_token as token. An AgentLine API key as
 Authorization: Bearer also works; OAuth tokens do not.
@@ -1220,10 +1216,7 @@ call ended; stop working on this request.
 
 ```typescript
 await client.calls.pushContext({
-    call_id: "call_id",
-    body: {
-        "key": "value"
-    }
+    call_id: "call_id"
 });
 
 ```
@@ -1240,7 +1233,7 @@ await client.calls.pushContext({
 <dl>
 <dd>
 
-**request:** `AgentlineApi.PushContextCallsRequest` 
+**request:** `AgentlineApi.CallContextPush` 
     
 </dd>
 </dl>
@@ -1613,7 +1606,7 @@ await client.messages.list();
 </dl>
 </details>
 
-<details><summary><code>client.messages.<a href="/src/api/resources/messages/client/Client.ts">send</a>({ ...params }) -> unknown</code></summary>
+<details><summary><code>client.messages.<a href="/src/api/resources/messages/client/Client.ts">send</a>({ ...params }) -> AgentlineApi.MessageOut</code></summary>
 <dl>
 <dd>
 

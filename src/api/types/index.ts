@@ -23,6 +23,7 @@ export * from "./KeylessListBody.js";
 export * from "./KeylessRenewBody.js";
 export * from "./KeylessTranscriptBody.js";
 export * from "./KeylessWebhookBody.js";
+export * from "./MessageOut.js";
 export * from "./OtpRequest.js";
 export * from "./PayDiscoveryBody.js";
 export * from "./ValidationError.js";
