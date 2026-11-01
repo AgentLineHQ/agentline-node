@@ -13,8 +13,12 @@ export interface AgentCreate {
     system_prompt?: string | null;
     /** Default opening line spoken on ALL calls (inbound and outbound), e.g. 'Hello, how can I help you today?'. Can be overridden per-call via POST /v1/calls. */
     initial_greeting?: string | null;
-    /** TTS voice preset name (e.g. 'female-1', 'male-1') or a voice UUID; defaults to system voice if not set */
+    /** Voice the agent speaks with: a voice_id from list_available_voices or a legacy preset name (e.g. 'female-1'); defaults to the system voice if not set */
     voice_id?: string | null;
+    /** BCP-47 locale the agent listens and speaks in, e.g. 'en-US', 'hi-IN'. 'auto' (or unset) keeps multilingual auto-detection. Allowed values are listed under 'languages' by list_available_voices. */
+    speech_language?: string | null;
+    /** Speaking pace multiplier from 0.6 (slower) to 1.5 (faster); 1.0 is the voice's natural pace. */
+    speaking_speed?: number | null;
     /** Number a live call is transferred to. Only the owner phone is allowed, so leave it out or send the same E.164 number as owner_phone; setting owner_phone fills it in. */
     transfer_number?: string | null;
     /** Message the AI agent leaves if the call goes to voicemail */

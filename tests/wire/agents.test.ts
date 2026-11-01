@@ -28,6 +28,8 @@ describe("AgentsClient", () => {
             system_prompt: "system_prompt",
             initial_greeting: "initial_greeting",
             voice_id: "voice_id",
+            speech_language: "speech_language",
+            speaking_speed: 1.1,
             transfer_number: "transfer_number",
             voicemail_message: "voicemail_message",
             owner_phone: "owner_phone",

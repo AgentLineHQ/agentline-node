@@ -234,30 +234,48 @@ export class VoiceClient {
     }
 
     /**
-     * List all available voice presets for AI phone agents.
+     * List the voices an AI phone agent can speak with.
      *
-     * Returns named TTS (text-to-speech) voice presets that can be used
-     * when configuring AI agents or making phone calls. Each voice defines
-     * how your AI agent sounds on the phone.
+     * Returns the six built-in voices — female-1, female-2, female-3, male-1,
+     * male-2, male-3 — plus the speech languages an agent can be pinned to and
+     * the speaking-speed range. The owner can pick from many more voices
+     * (accents and languages) in the AgentLine dashboard; an agent set to one
+     * of those keeps it.
      *
-     * Returns {"voices": [...], "default_voice_id", "usage_hint"}: each voice
-     * has preset_name (e.g. "female-1"), voice_id (UUID), name and description.
+     * Returns {"voices": [...], "languages": [...], "speaking_speed": {...},
+     * "default_voice_id", "usage_hint"}. Each voice has preset_name
+     * (e.g. "female-1"), voice_id, name, tagline, description, gender, accent,
+     * locale, language and has_preview.
      * Pass either preset_name or voice_id as voice_id to create_agent,
      * update_agent, make_outbound_call or set_account_voice.
      *
+     * @param {AgentlineApi.ListVoiceRequest} request
      * @param {VoiceClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link AgentlineApi.UnprocessableEntityError}
      * @throws {@link errors.AgentlineApiError}
      * @throws {@link errors.AgentlineApiTimeoutError}
      *
      * @example
      *     await client.voice.list()
      */
-    public list(requestOptions?: VoiceClient.RequestOptions): core.HttpResponsePromise<unknown> {
-        return core.HttpResponsePromise.fromPromise(this.__list(requestOptions));
+    public list(
+        request: AgentlineApi.ListVoiceRequest = {},
+        requestOptions?: VoiceClient.RequestOptions,
+    ): core.HttpResponsePromise<unknown> {
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
     }
 
-    private async __list(requestOptions?: VoiceClient.RequestOptions): Promise<core.WithRawResponse<unknown>> {
+    private async __list(
+        request: AgentlineApi.ListVoiceRequest = {},
+        requestOptions?: VoiceClient.RequestOptions,
+    ): Promise<core.WithRawResponse<unknown>> {
+        const { gender, language, q } = request;
+        const _queryParams: Record<string, unknown> = {
+            gender,
+            language,
+            q,
+        };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -273,7 +291,11 @@ export class VoiceClient {
             ),
             method: "GET",
             headers: _headers,
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -285,11 +307,19 @@ export class VoiceClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.AgentlineApiError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 422:
+                    throw new AgentlineApi.UnprocessableEntityError(
+                        _response.error.body as AgentlineApi.HttpValidationError,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.AgentlineApiError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/voices");

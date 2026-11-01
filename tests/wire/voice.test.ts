@@ -78,7 +78,7 @@ describe("VoiceClient", () => {
         }).rejects.toThrow(AgentlineApi.UnprocessableEntityError);
     });
 
-    test("list", async () => {
+    test("list (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
 
@@ -88,5 +88,18 @@ describe("VoiceClient", () => {
 
         const response = await client.voice.list();
         expect(response).toEqual(rawResponseBody);
+    });
+
+    test("list (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new AgentLineClient({ maxRetries: 0, apiKey: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {};
+
+        server.mockEndpoint().get("/v1/voices").respondWith().statusCode(422).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.voice.list();
+        }).rejects.toThrow(AgentlineApi.UnprocessableEntityError);
     });
 });

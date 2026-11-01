@@ -11,8 +11,12 @@ export interface AgentOut {
     system_prompt?: (string | null) | undefined;
     /** Default greeting for all calls (can be overridden per-call) */
     initial_greeting?: (string | null) | undefined;
-    /** TTS voice preset or voice UUID */
+    /** Voice the agent speaks with (voice_id or legacy preset name) */
     voice_id?: (string | null) | undefined;
+    /** Pinned speech locale, or null for multilingual auto-detection */
+    speech_language?: (string | null) | undefined;
+    /** Speaking pace multiplier; null means the natural pace (1.0) */
+    speaking_speed?: (number | null) | undefined;
     /** Always the owner phone. Live calls transfer only here. */
     transfer_number?: (string | null) | undefined;
     /** Message left on voicemail */

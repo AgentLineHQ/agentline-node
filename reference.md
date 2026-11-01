@@ -205,7 +205,7 @@ await client.voice.set({
 </dl>
 </details>
 
-<details><summary><code>client.voice.<a href="/src/api/resources/voice/client/Client.ts">list</a>() -> unknown</code></summary>
+<details><summary><code>client.voice.<a href="/src/api/resources/voice/client/Client.ts">list</a>({ ...params }) -> unknown</code></summary>
 <dl>
 <dd>
 
@@ -217,14 +217,18 @@ await client.voice.set({
 <dl>
 <dd>
 
-List all available voice presets for AI phone agents.
+List the voices an AI phone agent can speak with.
 
-Returns named TTS (text-to-speech) voice presets that can be used
-when configuring AI agents or making phone calls. Each voice defines
-how your AI agent sounds on the phone.
+Returns the six built-in voices — female-1, female-2, female-3, male-1,
+male-2, male-3 — plus the speech languages an agent can be pinned to and
+the speaking-speed range. The owner can pick from many more voices
+(accents and languages) in the AgentLine dashboard; an agent set to one
+of those keeps it.
 
-Returns {"voices": [...], "default_voice_id", "usage_hint"}: each voice
-has preset_name (e.g. "female-1"), voice_id (UUID), name and description.
+Returns {"voices": [...], "languages": [...], "speaking_speed": {...},
+"default_voice_id", "usage_hint"}. Each voice has preset_name
+(e.g. "female-1"), voice_id, name, tagline, description, gender, accent,
+locale, language and has_preview.
 Pass either preset_name or voice_id as voice_id to create_agent,
 update_agent, make_outbound_call or set_account_voice.
 </dd>
@@ -253,6 +257,14 @@ await client.voice.list();
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**request:** `AgentlineApi.ListVoiceRequest` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>

@@ -15,8 +15,12 @@ export interface AgentUpdate {
     system_prompt?: string | null;
     /** Updated default greeting for ALL future calls (inbound and outbound) */
     initial_greeting?: string | null;
-    /** New TTS voice preset name or voice UUID */
+    /** New voice: a voice_id from list_available_voices or a legacy preset name */
     voice_id?: string | null;
+    /** BCP-47 locale the agent listens and speaks in, e.g. 'en-US', 'hi-IN'. 'auto' (or unset) keeps multilingual auto-detection. Allowed values are listed under 'languages' by list_available_voices. Send null to go back to auto-detection. */
+    speech_language?: string | null;
+    /** Speaking pace multiplier from 0.6 (slower) to 1.5 (faster); 1.0 is the voice's natural pace. Send null to go back to 1.0. */
+    speaking_speed?: number | null;
     /** Number a live call is transferred to. Only the owner phone is allowed, so send the same E.164 number as owner_phone (current or in this request); setting owner_phone updates it automatically. */
     transfer_number?: string | null;
     /** Updated voicemail message */
