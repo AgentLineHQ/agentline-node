@@ -22,6 +22,8 @@ export interface WebhookConfig {
     protocol?: WebhookConfig.Protocol | null;
     /** Relay v2 capabilities. Omit to keep the existing value when updating. */
     capabilities?: AgentlineApi.WebhookCapabilities | null;
+    /** Extra HTTP headers sent with every delivery, as {name: value}. Use this when the receiver needs its own credential: for example {"Authorization": "Bearer <key>"} for a Grok Bot (Cursor) webhook routine, or an API-key header for n8n, Make or Zapier. Values are returned in full only by this call and masked on reads. Omit to keep the current headers when updating; pass {} to remove them all. At most 10 headers; Content-Type, Host, X-AgentLine-* and the signature header cannot be set here. */
+    headers?: Record<string, string | null> | null;
 }
 
 export namespace WebhookConfig {

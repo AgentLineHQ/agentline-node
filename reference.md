@@ -2207,8 +2207,11 @@ webhook; setting it again replaces the URL. Omitted secret,
 signature_header, protocol and capabilities keep their current values.
 
 Returns agent_id, url, the full secret (shown only here; get_webhook
-masks it), signature_header, protocol, capabilities and created_at.
-Store the secret to verify the signature header on deliveries.
+masks it), signature_header, protocol, capabilities, headers and
+created_at. Store the secret to verify the signature header on deliveries.
+
+`headers` adds the receiver's own credential to every delivery, e.g.
+{"Authorization": "Bearer <key>"} for a Grok Bot (Cursor) webhook routine.
 </dd>
 </dl>
 </dd>

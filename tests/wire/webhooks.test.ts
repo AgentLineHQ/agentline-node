@@ -41,6 +41,7 @@ describe("WebhooksClient", () => {
             signature_header: "signature_header",
             protocol: "protocol",
             capabilities: { key: "value" },
+            headers: { key: "value" },
             created_at: "2024-01-15T09:30:00Z",
         };
 

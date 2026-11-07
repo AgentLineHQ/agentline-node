@@ -4,4 +4,5 @@ export interface AccountWebhookConfig {
     url: string;
     secret?: (string | null) | undefined;
     signature_header?: (string | null) | undefined;
+    headers?: (Record<string, string | null> | null) | undefined;
 }

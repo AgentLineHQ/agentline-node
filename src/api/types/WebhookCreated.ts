@@ -16,6 +16,8 @@ export interface WebhookCreated {
     protocol?: string | undefined;
     /** Declared relay v2 capabilities. */
     capabilities?: Record<string, unknown> | undefined;
+    /** Custom delivery headers with full values. Masked on subsequent reads. */
+    headers?: Record<string, string> | undefined;
     /** When the webhook was last (re)configured */
     created_at?: (string | null) | undefined;
 }

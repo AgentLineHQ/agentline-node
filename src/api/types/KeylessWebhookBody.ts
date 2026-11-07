@@ -9,4 +9,6 @@ export interface KeylessWebhookBody {
     secret?: (string | null) | undefined;
     /** HMAC header name (default 'X-Webhook-Signature') */
     signature_header?: (string | null) | undefined;
+    /** Extra headers sent with every delivery, e.g. {"Authorization": "Bearer <key>"} for a receiver that needs its own credential. Omit to keep; {} clears. Masked on reads. */
+    headers?: (Record<string, string | null> | null) | undefined;
 }
