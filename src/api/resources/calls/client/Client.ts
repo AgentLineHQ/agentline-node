@@ -292,6 +292,11 @@ export class CallsClient {
      * context is required unless disposition is noop. turn_id is required
      * unless disposition is facts.
      *
+     * Optional remember, with done or facts: keeps the answer in the agent's
+     * knowledge store so the hosted voice answers the same question itself on
+     * later calls. "everyone" (any caller may hear it), "everyone static"
+     * (rarely changes) or "caller" (this call's number only).
+     *
      * Auth: pass the event's push_token as token. An AgentLine API key as
      * Authorization: Bearer also works; OAuth tokens do not.
      *

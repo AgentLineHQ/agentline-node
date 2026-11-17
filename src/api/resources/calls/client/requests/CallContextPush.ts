@@ -18,6 +18,8 @@ export interface CallContextPush {
     context?: string | null;
     /** What this push does with the open task. partial: one real fact so far, spoken now, task stays open. progress: a note for the voice, not spoken, task stays open. done (default): final facts, settles the task. failed: could not do it, settles the task. noop: settle the task with nothing to say; context not needed. facts: a briefing for the whole call at any time, no turn_id needed. */
     disposition?: CallContextPush.Disposition;
+    /** With done or facts: keep this answer so the hosted voice can answer the same question at once on later calls, without asking you. "everyone": true for any caller (hours, prices, policies); add " static" if it rarely changes. "caller": about this call's number only (their appointment, order). Omit for anything one-off or private to someone else. Keys and expiry are handled for you. Ignored unless the knowledge store is on for the agent. */
+    remember?: CallContextPush.Remember | null;
 }
 
 export namespace CallContextPush {
@@ -31,4 +33,8 @@ export namespace CallContextPush {
         Facts: "facts",
     } as const;
     export type Disposition = (typeof Disposition)[keyof typeof Disposition];
+    /**
+     * With done or facts: keep this answer so the hosted voice can answer the same question at once on later calls, without asking you. "everyone": true for any caller (hours, prices, policies); add " static" if it rarely changes. "caller": about this call's number only (their appointment, order). Omit for anything one-off or private to someone else. Keys and expiry are handled for you. Ignored unless the knowledge store is on for the agent.
+     */
+    export type Remember = boolean | string | Record<string, unknown>;
 }
