@@ -113,6 +113,10 @@ export class MessagesClient {
      * Each account can send 250 texts per UTC day across all its agents,
      * unless the account has a raised limit.
      *
+     * Test line: any +1 555 number (e.g. +15555550100) reaches no one. The text
+     * is not sent or billed and returns status 'delivered' with test=true; the
+     * test line then texts back once, which arrives as sms.received.
+     *
      * @param {AgentlineApi.MessageSend} request
      * @param {MessagesClient.RequestOptions} requestOptions - Request-specific configuration.
      *

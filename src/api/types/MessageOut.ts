@@ -19,4 +19,6 @@ export interface MessageOut {
     status: string;
     /** When the message was sent */
     created_at: string;
+    /** True when sent to the test line (any +1 555 number): nothing was sent or billed */
+    test?: (boolean | null) | undefined;
 }

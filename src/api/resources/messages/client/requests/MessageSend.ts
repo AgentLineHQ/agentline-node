@@ -11,7 +11,7 @@
 export interface MessageSend {
     /** ID of the AI agent sending the SMS (e.g. 'agt_abc123') */
     agent_id: string;
-    /** Destination phone number in E.164 format (e.g. '+12125551234') */
+    /** Destination phone number in E.164 format (e.g. '+12125551234'). Any +1 555 number, e.g. '+15555550100', is the test line: not sent or billed, and it texts back once. */
     to_number: string;
     /** SMS message text content */
     body: string;

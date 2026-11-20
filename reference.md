@@ -1072,6 +1072,10 @@ Returns right after dialing with the call id (call_...), agent_id,
 from_number, to_number, direction, status and started_at; the call runs
 on its own. Check get_call_details for progress and call
 get_call_transcript once status is completed.
+
+Test line: any +1 555 number (e.g. +15555550100) reaches no one. The call
+is not dialled or billed; it returns status 'completed' with test=true
+and a short transcript, and fires call.completed. Use it to test.
 </dd>
 </dl>
 </dd>
@@ -1651,6 +1655,10 @@ Send an outbound SMS message from an AI agent's phone number.
 
 Each account can send 250 texts per UTC day across all its agents,
 unless the account has a raised limit.
+
+Test line: any +1 555 number (e.g. +15555550100) reaches no one. The text
+is not sent or billed and returns status 'delivered' with test=true; the
+test line then texts back once, which arrives as sms.received.
 </dd>
 </dl>
 </dd>

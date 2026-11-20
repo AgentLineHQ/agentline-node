@@ -10,7 +10,7 @@
 export interface CallRequest {
     /** ID of the AI agent making the call (e.g. 'agt_abc123') */
     agent_id: string;
-    /** Destination phone number in E.164 format (e.g. '+12125551234') */
+    /** Destination phone number in E.164 format (e.g. '+12125551234'). Any +1 555 number, e.g. '+15555550100', is the test line: not dialled or billed. */
     to_number: string;
     /** Per-call system prompt override. Replaces the agent's default prompt for this call ONLY. If omitted, the agent's default system_prompt is used. */
     system_prompt?: string | null;

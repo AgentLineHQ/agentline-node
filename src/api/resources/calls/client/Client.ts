@@ -131,6 +131,10 @@ export class CallsClient {
      * on its own. Check get_call_details for progress and call
      * get_call_transcript once status is completed.
      *
+     * Test line: any +1 555 number (e.g. +15555550100) reaches no one. The call
+     * is not dialled or billed; it returns status 'completed' with test=true
+     * and a short transcript, and fires call.completed. Use it to test.
+     *
      * @param {AgentlineApi.CallRequest} request
      * @param {CallsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
